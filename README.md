@@ -31,7 +31,7 @@ Isso definirá o `GoodHamburguer.API` como o projeto que será executado quando 
 ---
 
 # <img height="30" width="30" src="https://img.icons8.com/?size=100&id=yzSggttkqLf4&format=png&color=000000" alt="English" /> Good Hamburguer
-Desenvolvimento de uma aplicação back-end em C# com .NET, aplicação dos conceitos de Controladores e Entidades, uso da abordagem DDD (Domain Drive Design), uso do InMemoryContext pra manipulação do banco de dados em memória, Swagger para documentação da API e o uso do ORM Entity Framework.
+Development of a back-end application in C# with .NET, applying the concepts of Controllers and Entities, using the DDD (Domain-Driven Design) approach, InMemoryContext for manipulating the in-memory database, Swagger for API documentation, and the use of the Entity Framework ORM.
 
 ## Features
 - **Menu:** List all menu itens, List all sandwiches and List all extras (Fries and Drinks).
