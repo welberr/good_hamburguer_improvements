@@ -16,6 +16,22 @@ Desenvolvimento de uma aplicação back-end em C# com .NET, aplicação dos conc
 - **Menu:** Listar todas os itens do menu, Listar todos os sandwiches, Listar todos os extras (Batata Fritas e Bebidas).
 - **Order:** Adicionar, Listar todas os pedidos, Atualizar e Remover.
 
+## Regras
+- Se o cliente selecionar um sanduíche, batatas fritas e um refrigerante, então o cliente receberá um desconto de 20%.
+- Se o cliente selecionar um sanduíche e um refrigerante, então o cliente receberá um desconto de 15%.
+- Se o cliente selecionar um sanduíche e batatas fritas, então o cliente receberá um desconto de 10%.
+- Cada pedido não pode conter mais de um sanduíche, batatas fritas ou refrigerante. Se dois itens idênticos forem enviados, a API deve retornar uma mensagem de erro exibindo o motivo.
+
+## Requisitos
+1. Crie uma API WEB em C# (Versão 8 do .NET Core).
+2. Crie um endpoint para listar sanduíches e acompanhamentos.
+3. Crie um endpoint para listar apenas sanduíches.
+4. Crie um endpoint para listar apenas acompanhamentos.
+5. Crie um endpoint para enviar um pedido e retornar o valor que será cobrado ao cliente.
+6. Crie um endpoint para listar todos os pedidos.
+7. Crie um endpoint para atualizar um pedido.
+8. Crie um endpoint para remover um pedido.
+
 ## Iniciando o projeto
 Defina o projeto GoodHamburguer.API como projeto de inicialização. <br/>
 Para definir o projeto `GoodHamburguer.API` como o projeto de inicialização no Visual Studio, siga os passos abaixo:
@@ -30,12 +46,35 @@ Isso definirá o `GoodHamburguer.API` como o projeto que será executado quando 
 
 ---
 
+<br/>
+
 # <img height="30" width="30" src="https://img.icons8.com/?size=100&id=yzSggttkqLf4&format=png&color=000000" alt="English" /> Good Hamburguer
 Development of a back-end application in C# with .NET, applying the concepts of Controllers and Entities, using the DDD (Domain-Driven Design) approach, InMemoryContext for manipulating the in-memory database, Swagger for API documentation, and the use of the Entity Framework ORM.
 
 ## Features
 - **Menu:** List all menu itens, List all sandwiches and List all extras (Fries and Drinks).
 - **Order:** Add, List all orders, Update, Remove
+
+## Rules
+- If the customer selects a sandwich, fries, and soft drink, then the customer will have 20%
+discount.
+- If the customer selects a sandwich and soft drink, then the customer will have 15% discount.
+- If the customer selects a sandwich and fries, then the customer will have a 10% discount.
+- Each order cannot contain more than one sandwich, fries, or soda. If two identical items are
+sent, the API should return an error message displaying the reason.
+
+## Requirements
+1) Create a WEB API in C# - version 8 of .NET Core (it will not be necessary to include any type of
+authentication)
+2) Create an endpoint to list sandwiches and extras.
+3) Create an endpoint to list sandwiches only.
+4) Create an endpoint to list extra only.
+5) Create an endpoint to send an order and return the amount that will be charged to the
+customer.
+6) Create an endpoint to list all orders.
+7) Create an endpoint to update an order.
+8) Create an endpoint to remove an order. 
+
 
 ## Getting Start
 Set the `GoodHamburguer.API` project as the startup project.  
