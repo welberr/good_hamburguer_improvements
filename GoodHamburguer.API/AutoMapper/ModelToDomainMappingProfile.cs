@@ -24,7 +24,6 @@ namespace GoodHamburguer.API.Pro
             CreateMap<Fries, FriesRequestModel>();
             CreateMap<Drink, DrinkRequestModel>();
             CreateMap<Order, OrderRequestModel>();
-            CreateMap<Order, OrderRequestModel>();
             #endregion
         }
     }
