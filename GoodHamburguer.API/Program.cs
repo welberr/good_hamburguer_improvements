@@ -1,4 +1,5 @@
 using GoodHamburguer.API.Configurations;
+using GoodHamburguer.API.Filters;
 using GoodHamburguer.API.Validator.Request;
 using GoodHamburguer.Data.InMemoryContext;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ builder.Services.AddDbContext<OrderContext>(options => options.UseInMemoryDataba
 builder.Services.AddDbContext<OrderSandwichContext>(options => options.UseInMemoryDatabase("OrderSandwichDb"));
 builder.Services.AddDbContext<OrderFriesContext>(options => options.UseInMemoryDatabase("OrderFriesDb"));
 builder.Services.AddDbContext<OrderDrinkContext>(options => options.UseInMemoryDatabase("OrderDrinkDb"));
+
+builder.Services.AddMvc(config => config.Filters.Add(typeof(ExceptionFilter)));
 
 var app = builder.Build();
 

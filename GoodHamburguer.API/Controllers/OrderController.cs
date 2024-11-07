@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using GoodHamburguer.API.Model.Request;
 using GoodHamburguer.API.Model.Response;
 using GoodHamburguer.API.Validator.Request;
 using GoodHamburguer.Application.Interfaces;
 using GoodHamburguer.Domain.Entities;
+using GoodHamburguer.Domain.Exceptions;
+using GoodHamburguer.Domain.Resources;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace GoodHamburguer.API.Controllers
 {
@@ -31,21 +35,17 @@ namespace GoodHamburguer.API.Controllers
         [HttpPost]
         [Route("")]
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult AddOrderWithItens([FromBody] OrderRequestModel request)
         {
-            if (!_orderRequestValidator.ValidateOrderRequestQuantityZero(request))
-                return BadRequest("Must select at least one quantity of the item.");
-
-            if (!_orderRequestValidator.ValidateOrderRequestQuantityItens(request))
-                return BadRequest("Cannot contain more than one sandwich, fries or soda.");
-
-            if (!_orderRequestValidator.ValidateOrderRequestItens(request))
-                return BadRequest("Please choose at least one item from the menu.");
+            _orderRequestValidator.ValidateOrderRequestQuantityZero(request);
+            _orderRequestValidator.ValidateOrderRequestQuantityItens(request);
+            _orderRequestValidator.ValidateOrderRequestItens(request);
 
             Order order = _mapper.Map<OrderRequestModel, Order>(request);
 
             if (_orderAppService.AddOrderWithItens(order).Id == 0)
-                return BadRequest("Unable to create order.");
+                throw new ErrorOnValidationException(ResourceExceptionMessages.UNABLE_TO_CREATE_ORDER, HttpStatusCode.BadRequest);
 
             return Created(string.Empty, _mapper.Map<Order, OrderResponseModel>(order));
         }
@@ -53,13 +53,13 @@ namespace GoodHamburguer.API.Controllers
         [HttpGet]
         [Route("")]
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult GetAllActiveOrdersWithItens()
         {
             List<OrderResponseModel> orders = _mapper.Map<List<Order>, List<OrderResponseModel>>(_orderAppService.GetAllActiveOrdersWithItens().ToList());
 
             if(orders.Count() == 0)
-                return NoContent();
+                throw new ErrorOnValidationException(ResourceExceptionMessages.NO_ORDERS_WERE_FOUND, HttpStatusCode.BadRequest);
 
             return Ok(orders);
         }
@@ -67,24 +67,19 @@ namespace GoodHamburguer.API.Controllers
         [HttpPut]
         [Route("")]
         [ProducesResponseType(typeof(OrderUpdateResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult UpdateOrderWithItens([FromBody] OrderUpdateRequestModel request)
         {
             Order order = _orderAppService.GetActiveOrderWithItens(request.Id);
 
             if (order is not Order)
-                return NoContent();
+                throw new ErrorOnValidationException(ResourceExceptionMessages.ORDER_NOT_FOUND, HttpStatusCode.BadRequest);
 
             OrderRequestModel orderRequest = _mapper.Map<OrderUpdateRequestModel, OrderRequestModel>(request);
 
-            if (!_orderRequestValidator.ValidateOrderRequestQuantityZero(orderRequest))
-                return BadRequest("Must select at least one quantity of the item.");
-
-            if (!_orderRequestValidator.ValidateOrderRequestQuantityItens(orderRequest))
-                return BadRequest("Cannot contain more than one sandwich, fries or soda.");
-
-            if (!_orderRequestValidator.ValidateOrderRequestItens(orderRequest))
-                return BadRequest("Please choose at least one item from the menu.");
+            _orderRequestValidator.ValidateOrderRequestQuantityZero(orderRequest);
+            _orderRequestValidator.ValidateOrderRequestQuantityItens(orderRequest);
+            _orderRequestValidator.ValidateOrderRequestItens(orderRequest);
 
             Order newValues = _mapper.Map<OrderRequestModel, Order>(orderRequest);
 
@@ -94,26 +89,24 @@ namespace GoodHamburguer.API.Controllers
             };
 
             if(!_orderAppService.UpdateOrderWithItens(order, newValues))
-                return BadRequest("Unable to update order.");
+                throw new ErrorOnValidationException(ResourceExceptionMessages.UNABLE_TO_UPDATE_ORDER, HttpStatusCode.BadRequest);
 
             orderUpdateResponseModel.New = _mapper.Map<Order, OrderResponseModel>(order);
-
             return Ok(orderUpdateResponseModel);
         }
 
         [HttpDelete]
         [Route("")]
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult InactivateOrder(int id)
         {
             Order order = _orderAppService.GetActiveOrderWithItens(id);
 
             if (order is not Order)
-                return NoContent();
+                throw new ErrorOnValidationException(ResourceExceptionMessages.ORDER_NOT_FOUND, HttpStatusCode.BadRequest);
 
             _orderAppService.Remove(order);
-
             return Ok(order);
         }
     }
