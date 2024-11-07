@@ -5,9 +5,9 @@ namespace GoodHamburguer.Application.Interfaces
 {
     public interface IOrderAppService : IServiceBase<Order>
     {
-        Order AddOrderWithItens(Order order);
+        void AddOrderWithItens(Order order);
         Order GetActiveOrderWithItens(int id);
         List<Order> GetAllActiveOrdersWithItens();
-        bool UpdateOrderWithItens(Order order, Order newValues);
+        void UpdateOrderWithItens(Order order, Order newValues);
     }
 }

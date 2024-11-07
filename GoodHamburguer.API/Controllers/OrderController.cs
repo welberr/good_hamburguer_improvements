@@ -37,14 +37,11 @@ namespace GoodHamburguer.API.Controllers
         [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult AddOrderWithItens([FromBody] OrderRequestModel request)
         {
-            _orderRequestValidator.ValidateOrderRequestQuantityZero(request);
-            _orderRequestValidator.ValidateOrderRequestQuantityItens(request);
-            _orderRequestValidator.ValidateOrderRequestItens(request);
+            _orderRequestValidator.ValidateOrderRequest(request);
 
             Order order = _mapper.Map<OrderRequestModel, Order>(request);
 
-            if (_orderAppService.AddOrderWithItens(order).Id == 0)
-                throw new ErrorOnValidationException(ResourceExceptionMessages.UNABLE_TO_CREATE_ORDER, HttpStatusCode.BadRequest);
+            _orderAppService.AddOrderWithItens(order);
 
             return Created(string.Empty, _mapper.Map<Order, OrderResponseModel>(order));
         }
@@ -66,6 +63,7 @@ namespace GoodHamburguer.API.Controllers
         [HttpPut]
         [Route("")]
         [ProducesResponseType(typeof(OrderUpdateResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult UpdateOrderWithItens([FromBody] OrderUpdateRequestModel request)
         {
@@ -76,9 +74,7 @@ namespace GoodHamburguer.API.Controllers
 
             OrderRequestModel orderRequest = _mapper.Map<OrderUpdateRequestModel, OrderRequestModel>(request);
 
-            _orderRequestValidator.ValidateOrderRequestQuantityZero(orderRequest);
-            _orderRequestValidator.ValidateOrderRequestQuantityItens(orderRequest);
-            _orderRequestValidator.ValidateOrderRequestItens(orderRequest);
+            _orderRequestValidator.ValidateOrderRequest(orderRequest);
 
             Order newValues = _mapper.Map<OrderRequestModel, Order>(orderRequest);
 
@@ -87,8 +83,7 @@ namespace GoodHamburguer.API.Controllers
                 Old = _mapper.Map<Order, OrderResponseModel>(order)
             };
 
-            if(!_orderAppService.UpdateOrderWithItens(order, newValues))
-                throw new ErrorOnValidationException(ResourceExceptionMessages.UNABLE_TO_UPDATE_ORDER, HttpStatusCode.BadRequest);
+            _orderAppService.UpdateOrderWithItens(order, newValues);
 
             orderUpdateResponseModel.New = _mapper.Map<Order, OrderResponseModel>(order);
             return Ok(orderUpdateResponseModel);

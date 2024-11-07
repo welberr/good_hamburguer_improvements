@@ -1,6 +1,9 @@
 ﻿using GoodHamburguer.Application.Interfaces;
 using GoodHamburguer.Domain.Entities;
+using GoodHamburguer.Domain.Exceptions;
 using GoodHamburguer.Domain.Interfaces.Services;
+using GoodHamburguer.Domain.Resources;
+using System.Net;
 
 namespace GoodHamburguer.Application
 {
@@ -26,17 +29,18 @@ namespace GoodHamburguer.Application
             _drinkService = drinkService;
         }
 
-        public Order AddOrderWithItens(Order order)
+        public void AddOrderWithItens(Order order)
         {
-            if (!ValidateAddOrder(order))
-                return order;
+            ValidateOrderItens(order);
 
             _orderService.SetOrderItens(order);
             _orderService.CalculateAmount(order);
             _orderService.CalculateDiscount(order);
             _orderService.Add(order);
+
+            ValidateOrderAdded(order);
+
             _orderService.AddOrderItens(order);
-            return order;
         }
 
         public Order GetActiveOrderWithItens(int id)
@@ -67,10 +71,9 @@ namespace GoodHamburguer.Application
             return orders;
         }
 
-        public bool UpdateOrderWithItens(Order order, Order newValues)
+        public void UpdateOrderWithItens(Order order, Order newValues)
         {
-            if (!ValidateAddOrder(newValues))
-                return false;
+            ValidateOrderItens(newValues);
 
             _orderService.SetOrderItens(newValues);
             _orderService.CalculateAmount(newValues);
@@ -79,21 +82,26 @@ namespace GoodHamburguer.Application
             _orderService.Update(order);
             _orderService.RemoveOrderItens(order.Id);
             _orderService.AddOrderItens(order);
-            return true;
         }
 
-        private bool ValidateAddOrder(Order order)
+        private void ValidateOrderItens(Order order)
         {
             if (order.Sandwich is Sandwich && _sandwichService.GetById(order.Sandwich.Id) is not Sandwich)
-                return false;
+                throw new ErrorOnValidationException(ResourceExceptionMessages.INVALID_SANDWICH, HttpStatusCode.BadRequest);
 
             if (order.Fries is Fries && _friesService.GetById(order.Fries.Id) is not Fries)
-                return false;
+                throw new ErrorOnValidationException(ResourceExceptionMessages.INVALID_FRIES, HttpStatusCode.BadRequest);
 
             if (order.Drink is Drink && _drinkService.GetById(order.Drink.Id) is not Drink)
-                return false;
+                throw new ErrorOnValidationException(ResourceExceptionMessages.INVALID_DRINK, HttpStatusCode.BadRequest);
+        }
 
-            return true;
+        private void ValidateOrderAdded(Order order)
+        {
+            var listErrorMessages = new List<string>();
+
+            if (order.Id == 0)
+                throw new ErrorOnValidationException(ResourceExceptionMessages.UNABLE_TO_CREATE_ORDER, HttpStatusCode.BadRequest);
         }
     }
 }

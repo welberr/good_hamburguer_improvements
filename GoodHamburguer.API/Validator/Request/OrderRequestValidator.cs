@@ -7,7 +7,14 @@ namespace GoodHamburguer.API.Validator.Request
 {
     public class OrderRequestValidator
     {
-        public void ValidateOrderRequestItens(OrderRequestModel request)
+        public void ValidateOrderRequest(OrderRequestModel request)
+        {
+            ValidateOrderRequestItens(request);
+            ValidateOrderRequestQuantityItens(request);
+            ValidateOrderRequestQuantityZero(request);
+        }
+
+        private void ValidateOrderRequestItens(OrderRequestModel request)
         {
             if (request.Sandwich is not SandwichRequestModel && 
                 request.Fries is not FriesRequestModel && 

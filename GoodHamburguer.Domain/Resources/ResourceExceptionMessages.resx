@@ -120,6 +120,15 @@
   <data name="CANNOT_CONTAIN_MORE_THAN_ONE_SANDWICH_FRIES_OR_SODA" xml:space="preserve">
     <value>Cannot contain more than one sandwich, fries or soda.</value>
   </data>
+  <data name="INVALID_DRINK" xml:space="preserve">
+    <value>Invalid drink.</value>
+  </data>
+  <data name="INVALID_FRIES" xml:space="preserve">
+    <value>Invalid fries.</value>
+  </data>
+  <data name="INVALID_SANDWICH" xml:space="preserve">
+    <value>Invalid sandwich.</value>
+  </data>
   <data name="MUST_SELECT_AT_LEAST_ONE_QUANTITY" xml:space="preserve">
     <value>Must select at least one quantity of the item.</value>
   </data>

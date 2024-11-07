@@ -70,6 +70,33 @@ namespace GoodHamburguer.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid drink..
+        /// </summary>
+        public static string INVALID_DRINK {
+            get {
+                return ResourceManager.GetString("INVALID_DRINK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid fries..
+        /// </summary>
+        public static string INVALID_FRIES {
+            get {
+                return ResourceManager.GetString("INVALID_FRIES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid sandwich..
+        /// </summary>
+        public static string INVALID_SANDWICH {
+            get {
+                return ResourceManager.GetString("INVALID_SANDWICH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Must select at least one quantity of the item..
         /// </summary>
         public static string MUST_SELECT_AT_LEAST_ONE_QUANTITY {
