@@ -10,7 +10,7 @@
 
 
 # <img height="30" width="30" src="https://img.icons8.com/?size=100&id=iHI2gDXCsMzH&format=png&color=000000" alt="Brazil" /> Good Hamburguer
-Desenvolvimento de uma aplicação back-end em C# com .NET, aplicação dos conceitos de Controladores e Entidades, uso da abordagem DDD (Domain Drive Design), uso do InMemoryContext pra manipulação do banco de dados em memória, Swagger para documentação da API e o uso do ORM Entity Framework.
+Desenvolvimento de uma aplicação back-end em C# com .NET, aplicação dos conceitos de Controladores e Entidades, uso da abordagem DDD (Domain Drive Design), uso do InMemoryContext pra manipulação do banco de dados em memória, FluentValidation para tratamento das exceções, Swagger para documentação da API e o uso do ORM Entity Framework.
 
 ## Funcionalidades
 - **Menu:** Listar todas os itens do menu, Listar todos os sandwiches, Listar todos os extras (Batata Fritas e Bebidas).
@@ -49,7 +49,7 @@ Isso definirá o `GoodHamburguer.API` como o projeto que será executado quando 
 <br/>
 
 # <img height="30" width="30" src="https://img.icons8.com/?size=100&id=yzSggttkqLf4&format=png&color=000000" alt="English" /> Good Hamburguer
-Development of a back-end application in C# with .NET, applying the concepts of Controllers and Entities, using the DDD (Domain-Driven Design) approach, InMemoryContext for manipulating the in-memory database, Swagger for API documentation, and the use of the Entity Framework ORM.
+Development of a back-end application in C# with .NET, applying the concepts of Controllers and Entities, using the DDD (Domain-Driven Design) approach, InMemoryContext for manipulating the in-memory database, FluentValidation for exception handling, Swagger for API documentation, and the use of the Entity Framework ORM.
 
 ## Features
 - **Menu:** List all menu itens, List all sandwiches and List all extras (Fries and Drinks).
