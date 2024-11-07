@@ -24,7 +24,7 @@ namespace GoodHamburguer.API.Validator.Request
             }
         }
 
-        public void ValidateOrderRequestQuantityItens(OrderRequestModel request)
+        private void ValidateOrderRequestQuantityItens(OrderRequestModel request)
         {
             if ((request.Sandwich is SandwichRequestModel && request.Sandwich.Quantity > 1) || 
                 (request.Fries is FriesRequestModel && request.Fries.Quantity > 1) || 
@@ -34,7 +34,7 @@ namespace GoodHamburguer.API.Validator.Request
             }
         }
 
-        public void ValidateOrderRequestQuantityZero(OrderRequestModel request)
+        private void ValidateOrderRequestQuantityZero(OrderRequestModel request)
         {
             if ((request.Sandwich is SandwichRequestModel && request.Sandwich.Quantity == 0) || 
                 (request.Fries is FriesRequestModel && request.Fries.Quantity == 0) || 
