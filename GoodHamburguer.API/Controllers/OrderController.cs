@@ -63,7 +63,6 @@ namespace GoodHamburguer.API.Controllers
         [HttpPut]
         [Route("")]
         [ProducesResponseType(typeof(OrderUpdateResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
         public IActionResult UpdateOrderWithItens([FromBody] OrderUpdateRequestModel request)
         {
