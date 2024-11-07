@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using GoodHamburguer.API.Model.Request;
 using GoodHamburguer.API.Model.Response;
 using GoodHamburguer.API.Validator.Request;

@@ -3,7 +3,6 @@ using GoodHamburguer.Domain.Exceptions;
 using GoodHamburguer.Domain.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Net;
 
 namespace GoodHamburguer.API.Filters
 {
