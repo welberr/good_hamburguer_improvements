@@ -1,6 +1,7 @@
 using GoodHamburguer.API.Configurations;
 using GoodHamburguer.API.Filters;
 using GoodHamburguer.API.Validator.Request;
+using GoodHamburguer.Application.Validator;
 using GoodHamburguer.Data.InMemoryContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ builder.Services.RegisterServices();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddScoped<OrderRequestValidator>();
+builder.Services.AddScoped<OrderValidatorAppService>();
 
 builder.Services.AddDbContext<SandwichContext>(options => options.UseInMemoryDatabase("SandwichDb"));
 builder.Services.AddDbContext<FriesContext>(options => options.UseInMemoryDatabase("FriesDb"));

@@ -1,10 +1,10 @@
 ﻿namespace GoodHamburguer.API.Model.Response
 {
-    public class ResponseErrorsJson
+    public class ErrorsResponseModel
     {
         public IList<string> Errors { get; set; } = [];
 
-        public ResponseErrorsJson(IList<string> errors)
+        public ErrorsResponseModel(IList<string> errors)
         {
             Errors = errors;
         }

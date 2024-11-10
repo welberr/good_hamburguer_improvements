@@ -2,29 +2,27 @@
 
 namespace GoodHamburguer.Domain.Exceptions
 {
-    public class ErrorOnValidationException : SystemException
+    public class ErrorOnValidationException : GoodHamburguerException
     {
-        private readonly string _error;
-        private readonly HttpStatusCode _statusCode;
+        private readonly IList<string> _errors;
 
         public ErrorOnValidationException
         (
-            string error,
-            HttpStatusCode statusCode
-        )
+            IList<string> errors
+
+        ) : base(string.Empty)
         {
-            _error = error;
-            _statusCode = statusCode;
+            _errors = errors;
         }
 
-        public string GetErrorMessage()
+        public override IList<string> GetErrorMessages()
         {
-            return _error;
+            return _errors;
         }
 
-        public HttpStatusCode GetStatusCode()
+        public override HttpStatusCode GetStatusCode()
         {
-            return _statusCode;
+            return HttpStatusCode.BadRequest;
         }
     }
 }

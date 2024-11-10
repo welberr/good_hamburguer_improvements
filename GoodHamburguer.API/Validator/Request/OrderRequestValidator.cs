@@ -1,47 +1,54 @@
-﻿using GoodHamburguer.API.Model.Request;
+﻿using FluentValidation;
+using GoodHamburguer.API.Model.Request;
 using GoodHamburguer.Domain.Exceptions;
 using GoodHamburguer.Domain.Resources;
-using System.Net;
 
 namespace GoodHamburguer.API.Validator.Request
 {
-    public class OrderRequestValidator
+    public class OrderRequestValidator :  AbstractValidator<OrderRequestModel>
     {
         public void ValidateOrderRequest(OrderRequestModel request)
         {
-            ValidateOrderRequestItens(request);
-            ValidateOrderRequestQuantityItens(request);
-            ValidateOrderRequestQuantityZero(request);
-        }
+            RuleFor(request => request)
+                .Must(HasAtLeastOneItem)
+                .WithMessage(ResourceExceptionMessages.MUST_SELECT_AT_LEAST_ONE_QUANTITY);
 
-        private void ValidateOrderRequestItens(OrderRequestModel request)
-        {
-            if (request.Sandwich is not SandwichRequestModel && 
-                request.Fries is not FriesRequestModel && 
-                request.Drink is not DrinkRequestModel)
+            RuleFor(request => request)
+                .Must(HasValidQuantityForItems)
+                .WithMessage(ResourceExceptionMessages.CANNOT_CONTAIN_MORE_THAN_ONE_SANDWICH_FRIES_OR_SODA);
+
+            RuleFor(request => request)
+                .Must(HasNonZeroQuantityForItems)
+                .WithMessage(ResourceExceptionMessages.PLEASE_CHOOSE_AT_LEAST_ONE_ITEM_FROM_THE_MENU);
+
+            var result = Validate(request);
+
+            if (!result.IsValid)
             {
-                throw new ErrorOnValidationException(ResourceExceptionMessages.MUST_SELECT_AT_LEAST_ONE_QUANTITY, HttpStatusCode.BadRequest);
+                var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
+                throw new ErrorOnValidationException(errorMessages);
             }
         }
 
-        private void ValidateOrderRequestQuantityItens(OrderRequestModel request)
+        private bool HasAtLeastOneItem(OrderRequestModel request)
         {
-            if ((request.Sandwich is SandwichRequestModel && request.Sandwich.Quantity > 1) || 
-                (request.Fries is FriesRequestModel && request.Fries.Quantity > 1) || 
-                (request.Drink is DrinkRequestModel && request.Drink.Quantity > 1))
-            {
-                throw new ErrorOnValidationException(ResourceExceptionMessages.CANNOT_CONTAIN_MORE_THAN_ONE_SANDWICH_FRIES_OR_SODA, HttpStatusCode.BadRequest);
-            }
+            return request.Sandwich is SandwichRequestModel ||
+                   request.Fries is FriesRequestModel ||
+                   request.Drink is DrinkRequestModel;
         }
 
-        private void ValidateOrderRequestQuantityZero(OrderRequestModel request)
+        private bool HasValidQuantityForItems(OrderRequestModel request)
         {
-            if ((request.Sandwich is SandwichRequestModel && request.Sandwich.Quantity == 0) || 
-                (request.Fries is FriesRequestModel && request.Fries.Quantity == 0) || 
-                (request.Drink is DrinkRequestModel && request.Drink.Quantity == 0))
-            {
-                throw new ErrorOnValidationException(ResourceExceptionMessages.PLEASE_CHOOSE_AT_LEAST_ONE_ITEM_FROM_THE_MENU, HttpStatusCode.BadRequest);
-            }
+            return !(request.Sandwich is SandwichRequestModel && request.Sandwich.Quantity > 1) &&
+                   !(request.Fries is FriesRequestModel && request.Fries.Quantity > 1) &&
+                   !(request.Drink is DrinkRequestModel && request.Drink.Quantity > 1);
+        }
+
+        private bool HasNonZeroQuantityForItems(OrderRequestModel request)
+        {
+            return !(request.Sandwich is SandwichRequestModel && request.Sandwich.Quantity == 0) &&
+                   !(request.Fries is FriesRequestModel && request.Fries.Quantity == 0) &&
+                   !(request.Drink is DrinkRequestModel && request.Drink.Quantity == 0);
         }
     }
 }

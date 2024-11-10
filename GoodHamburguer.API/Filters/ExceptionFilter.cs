@@ -10,26 +10,19 @@ namespace GoodHamburguer.API.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            if (context.Exception is ErrorsOnValidationException)
+            if (context.Exception is not GoodHamburguerException)
             {
-                var errorsException = (ErrorsOnValidationException)context.Exception;
-                context.HttpContext.Response.StatusCode = (int)errorsException.GetStatusCode();
-                var responseErrors = new ResponseErrorsJson(errorsException.GetErrorMessages());
-                context.Result = new ObjectResult(responseErrors);
+                context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                var responseUnknownError = new ErrorsResponseModel(new List<string> { ResourceExceptionMessages.UNKNOWN_ERROR });
+                context.Result = new ObjectResult(responseUnknownError);
                 return;
             }
 
-            if (context.Exception is ErrorOnValidationException)
-            {
-                var errorException = (ErrorOnValidationException)context.Exception;
-                context.HttpContext.Response.StatusCode = (int)errorException.GetStatusCode();
-                var responseErrors = new ResponseErrorJson(errorException.GetErrorMessage());
-                context.Result = new ObjectResult(responseErrors);
-                return;
-            }
-
-            var responseJson = new ResponseErrorJson(ResourceExceptionMessages.UNKNOWN_ERROR);
-            context.Result = new ObjectResult(responseJson);
+            var errorsException = (GoodHamburguerException)context.Exception;
+            context.HttpContext.Response.StatusCode = (int)errorsException.GetStatusCode();
+            var responseErrors = new ErrorsResponseModel(errorsException.GetErrorMessages());
+            context.Result = new ObjectResult(responseErrors);
         }
     }
 }

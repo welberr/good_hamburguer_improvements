@@ -7,7 +7,6 @@ using GoodHamburguer.Domain.Entities;
 using GoodHamburguer.Domain.Exceptions;
 using GoodHamburguer.Domain.Resources;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace GoodHamburguer.API.Controllers
 {
@@ -34,7 +33,7 @@ namespace GoodHamburguer.API.Controllers
         [HttpPost]
         [Route("")]
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status400BadRequest)]
         public IActionResult AddOrderWithItens([FromBody] OrderRequestModel request)
         {
             _orderRequestValidator.ValidateOrderRequest(request);
@@ -49,13 +48,15 @@ namespace GoodHamburguer.API.Controllers
         [HttpGet]
         [Route("")]
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status404NotFound)]
+
         public IActionResult GetAllActiveOrdersWithItens()
         {
             List<OrderResponseModel> orders = _mapper.Map<List<Order>, List<OrderResponseModel>>(_orderAppService.GetAllActiveOrdersWithItens().ToList());
 
             if(orders.Count() == 0)
-                throw new ErrorOnValidationException(ResourceExceptionMessages.NO_ORDERS_WERE_FOUND, HttpStatusCode.BadRequest);
+                throw new NotFoundException(ResourceExceptionMessages.NO_ORDERS_WERE_FOUND);
 
             return Ok(orders);
         }
@@ -63,13 +64,14 @@ namespace GoodHamburguer.API.Controllers
         [HttpPut]
         [Route("")]
         [ProducesResponseType(typeof(OrderUpdateResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status404NotFound)]
         public IActionResult UpdateOrderWithItens([FromBody] OrderUpdateRequestModel request)
         {
             Order order = _orderAppService.GetActiveOrderWithItens(request.Id);
 
             if (order is not Order)
-                throw new ErrorOnValidationException(ResourceExceptionMessages.ORDER_NOT_FOUND, HttpStatusCode.BadRequest);
+                throw new NotFoundException(ResourceExceptionMessages.ORDER_NOT_FOUND);
 
             OrderRequestModel orderRequest = _mapper.Map<OrderUpdateRequestModel, OrderRequestModel>(request);
 
@@ -91,13 +93,14 @@ namespace GoodHamburguer.API.Controllers
         [HttpDelete]
         [Route("")]
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status404NotFound)]
         public IActionResult InactivateOrder(int id)
         {
             Order order = _orderAppService.GetActiveOrderWithItens(id);
 
             if (order is not Order)
-                throw new ErrorOnValidationException(ResourceExceptionMessages.ORDER_NOT_FOUND, HttpStatusCode.BadRequest);
+                throw new NotFoundException(ResourceExceptionMessages.ORDER_NOT_FOUND);
 
             _orderAppService.Remove(order);
             return Ok(order);
