@@ -26,16 +26,16 @@ namespace GoodHamburguer.Application.Validator
 
         public void ValidateOrderItens(Order order)
         {
-            RuleFor(order => order.Sandwich)
-            .Must(IsValidSandwich)
+            RuleFor(order => order)
+            .Must(HasSandwich)
             .WithMessage(ResourceExceptionMessages.INVALID_SANDWICH);
 
-            RuleFor(order => order.Fries)
-                .Must(IsValidFries)
+            RuleFor(order => order)
+                .Must(HasFries)
                 .WithMessage(ResourceExceptionMessages.INVALID_FRIES);
 
-            RuleFor(order => order.Drink)
-                .Must(IsValidDrink)
+            RuleFor(order => order)
+                .Must(HasDrink)
                 .WithMessage(ResourceExceptionMessages.INVALID_DRINK);
 
             var result = Validate(order);
@@ -49,26 +49,32 @@ namespace GoodHamburguer.Application.Validator
 
         public void ValidateOrderAdded(Order order)
         {
-            if (order.Id == 0)
+            if (!order.HasOrderId())
                 throw new ErrorOnValidationException(new List<string> { ResourceExceptionMessages.UNABLE_TO_CREATE_ORDER });
         }
 
-        private bool IsValidSandwich(Sandwich sandwich)
+        private bool HasSandwich(Order order)
         {
-            if (sandwich is not Sandwich) return true;
-            return _sandwichService.GetById(sandwich.Id) is not null;
+            if (!order.HasSandwich())
+                return true;
+
+            return _sandwichService.GetById(order.Sandwich.Id) is not null;
         }
 
-        private bool IsValidFries(Fries fries)
+        private bool HasFries(Order order)
         {
-            if (fries is not Fries) return true;
-            return _friesService.GetById(fries.Id) is not null;
+            if(!order.HasFries())
+                return true;
+
+            return _friesService.GetById(order.Fries.Id) is not null;
         }
 
-        private bool IsValidDrink(Drink drink)
+        private bool HasDrink(Order order)
         {
-            if (drink is not Drink) return true;
-            return _drinkService.GetById(drink.Id) is not null;
+            if (!order.HasDrink()) 
+                return true;
+
+            return _drinkService.GetById(order.Drink.Id) is not null;
         }
     }
 }

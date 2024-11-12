@@ -37,13 +37,13 @@ namespace GoodHamburguer.Domain.Services
 
         public void AddOrderItens(Order order)
         {
-            if (order.Sandwich is Sandwich)
+            if (order.HasSandwich())
                 _orderSandwichRepository.Add(new OrderSandwich { OrderId = order.Id, SandwichId = order.Sandwich.Id });
 
-            if (order.Fries is Fries)
+            if (order.HasFries())
                 _orderFriesRepository.Add(new OrderFries { OrderId = order.Id, FriesId = order.Fries.Id });
 
-            if (order.Drink is Drink)
+            if (order.HasDrink())
                 _orderDrinkRepository.Add(new OrderDrink { OrderId = order.Id, DrinkId = order.Drink.Id });
         }
 
@@ -84,13 +84,13 @@ namespace GoodHamburguer.Domain.Services
 
         public void SetOrderItens(Order order)
         {
-            if (order.Sandwich is Sandwich)
+            if (order.HasSandwich())
                 order.Sandwich = _sandwichRepository.GetById(order.Sandwich.Id);
 
-            if (order.Fries is Fries)
+            if (order.HasFries())
                 order.Fries = _friesRepository.GetById(order.Fries.Id);
 
-            if (order.Drink is Drink)
+            if (order.HasDrink())
                 order.Drink = _drinkRepository.GetById(order.Drink.Id);
         }
 
@@ -117,33 +117,33 @@ namespace GoodHamburguer.Domain.Services
 
         public void CalculateAmount(Order order)
         {
-            if (order.Sandwich is Sandwich)
+            if (order.HasSandwich())
                 order.Amount = order.FinalAmount += order.Sandwich.Price;
 
-            if (order.Fries is Fries)
+            if (order.HasFries())
                 order.Amount = order.FinalAmount += order.Fries.Price;
 
-            if (order.Drink is Drink)
+            if (order.HasDrink())
                 order.Amount = order.FinalAmount += order.Drink.Price;
         }
 
         public void CalculateDiscount(Order order)
         {
-            if (order.Sandwich is Sandwich && order.Fries is Fries && order.Drink is Drink)
+            if (order.HasSandwich() && order.HasFries() && order.HasDrink())
             {
                 order.Discount = order.Amount - (order.Amount * 0.80m);
                 order.FinalAmount = order.Amount - order.Discount;
                 return;
             }
 
-            if (order.Sandwich is Sandwich && order.Fries is Fries)
+            if (order.HasSandwich() && order.HasFries())
             {
                 order.Discount = order.Amount - (order.Amount * 0.90m);
                 order.FinalAmount = order.Amount - order.Discount;
                 return;
             }
 
-            if (order.Sandwich is Sandwich && order.Drink is Drink)
+            if (order.HasSandwich() && order.HasDrink())
             {
                 order.Discount = order.Amount - (order.Amount * 0.85m);
                 order.FinalAmount = order.Amount - order.Discount;
