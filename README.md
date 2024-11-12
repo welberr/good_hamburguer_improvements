@@ -9,7 +9,9 @@
 ---
 
 
-# <img height="30" width="30" src="https://img.icons8.com/?size=100&id=iHI2gDXCsMzH&format=png&color=000000" alt="Brazil" /> Good Hamburguer
+# <img height="30" width="30" src="https://img.icons8.com/?size=100&id=iHI2gDXCsMzH&format=png&color=000000" alt="Brazil" /> Good Hamburguer - Improvements
+Observação: Repositório criado com base na avaliação técnica do projeto [Good Hamburger](https://github.com/welberr/good_hamburguer), utilizado para experimentações, estudos e aprendizado de novas implementações.
+
 Desenvolvimento de uma aplicação back-end em C# com .NET, aplicação dos conceitos de Controladores e Entidades, uso da abordagem DDD (Domain Drive Design), uso do InMemoryContext pra manipulação do banco de dados em memória, FluentValidation para tratamento das exceções, Swagger para documentação da API e o uso do ORM Entity Framework.
 
 ## Funcionalidades
@@ -48,7 +50,9 @@ Isso definirá o `GoodHamburguer.API` como o projeto que será executado quando 
 
 <br/>
 
-# <img height="30" width="30" src="https://img.icons8.com/?size=100&id=yzSggttkqLf4&format=png&color=000000" alt="English" /> Good Hamburguer
+# <img height="30" width="30" src="https://img.icons8.com/?size=100&id=yzSggttkqLf4&format=png&color=000000" alt="English" /> Good Hamburguer - Improvements
+Note: Repository created based on the technical evaluation of the [Good Hamburger](https://github.com/welberr/good_hamburguer) project, used for experimentation, studies and learning new implementations.
+
 Development of a back-end application in C# with .NET, applying the concepts of Controllers and Entities, using the DDD (Domain-Driven Design) approach, InMemoryContext for manipulating the in-memory database, FluentValidation for exception handling, Swagger for API documentation, and the use of the Entity Framework ORM.
 
 ## Features
