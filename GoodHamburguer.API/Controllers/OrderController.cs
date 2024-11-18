@@ -50,7 +50,6 @@ namespace GoodHamburguer.API.Controllers
         [ProducesResponseType(typeof(OrderResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorsResponseModel), StatusCodes.Status404NotFound)]
-
         public IActionResult GetAllActiveOrdersWithItens()
         {
             List<OrderResponseModel> orders = _mapper.Map<List<Order>, List<OrderResponseModel>>(_orderAppService.GetAllActiveOrdersWithItens().ToList());
